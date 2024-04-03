@@ -1,22 +1,17 @@
-var heroName: String = ""
+package com.bignerdranch.nyethack
+
+val player = Player("Jason", "Jacksonville")
 
 fun main() {
-    heroName = promptHeroName()
     //changeNarratorMood()
-    narrate("$heroName, ${createTitle(heroName)}, heads to the town square")
+    val mortality = if (player.isImmortal) "an immortal" else "a mortal"
+    narrate("${player.name} of ${player.hometown}, ${player.title}, heads to the town square")
+    narrate("${player.name}, $mortality, has ${player.healthPoints} health points")
     visitTavern()
+    player.castFireball()
 }
 
 private fun makeYellow(message:String) = "\u001b[33;1m$message\u001b[0m"
-
-private fun createTitle(name:String): String {
-    return when {
-        name.all { it.isDigit() } -> "The Identifiable"
-        name.none { it.isLetter() } -> "The Witness Protection Member"
-        name.count {it.lowercase() in "aeiou"} > 4 -> "The Master of Vowels"
-        else -> "The Renowned Hero"
-    }
-}
 
 private fun promptHeroName(): String {
     narrate("A hero enters the town of Kronstadt. What is their name?", ::makeYellow)

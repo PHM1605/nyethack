@@ -1,3 +1,5 @@
+package com.bignerdranch.nyethack
+
 import java.io.File
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -19,7 +21,7 @@ private val menuItemPrices = menuData.associate { (_, name, price) -> name to pr
 private val menuItemTypes = menuData.associate { (type, name, _) -> name to type}
 
 fun visitTavern() {
-    narrate("$heroName enters $TAVERN_NAME")
+    narrate("${player.name} enters $TAVERN_NAME")
     narrate("There are several items for sale:")
     narrate(menuItems.joinToString())
 
@@ -28,11 +30,11 @@ fun visitTavern() {
     }.toMutableSet()
     val patronGold = mutableMapOf(
         TAVERN_MASTER to 86.00,
-        heroName to 4.50,
+        player.name to 4.50,
         * patrons.map { it to 6.00 }.toTypedArray()
     )
 
-    narrate("$heroName sees several patrons in the tavern:")
+    narrate("${player.name} sees several patrons in the tavern:")
     narrate(patrons.joinToString())
 
     val itemOfDay = patrons.flatMap{ getFavoriteMenuItems(it) }.random()
@@ -45,19 +47,32 @@ fun visitTavern() {
     val departingPatrons:List<String> = patrons.filter {
         patron -> patronGold.getOrDefault(patron, 0.0) < 4.0
     }
-    departingPatrons.forEach { patron -> narrate("$heroName sees $patron departing the tavern")}
-    patrons -= departingPatrons
-    patronGold -= departingPatrons
+
+    patrons
+        .filter { patron -> patronGold.getOrDefault(patron, 0.0) < 4.0 }
+        .also {
+            patrons -= it
+            patronGold -= it
+        }
+        .forEach { patron ->
+             narrate("${player.name} sees $patron departing the tavern")
+        }
+
     narrate("There are still some patrons in the tavern")
     narrate(patrons.joinToString())
 
-    val orderSubtotal = menuItemPrices.getOrDefault("Dragon's Breath", 0.0)
-    val salesTaxPercentage = 5
-    val gratuityPercent = 20
-    val feePercentages: List<Int> = listOf(salesTaxPercentage, gratuityPercent)
-    val orderTotal:Double = feePercentages.fold(orderSubtotal) { acc, percent -> acc * (1+percent/100.0)}
-    println("Order subtotal: $orderSubtotal")
-    println("Order total: $orderTotal")
+//    val orderSubtotal = menuItemPrices.getOrDefault("Dragon's Breath", 0.0)
+//    val salesTaxPercentage = 5
+//    val gratuityPercent = 20
+//    val feePercentages: List<Int> = listOf(salesTaxPercentage, gratuityPercent)
+//    val orderTotal:Double = feePercentages.fold(orderSubtotal) { acc, percent -> acc * (1+percent/100.0)}
+//    println("Order subtotal: $orderSubtotal")
+//    println("Order total: $orderTotal")
+
+    val orderTotal = menuItems.sumByDouble { item ->
+        menuItemPrices.getOrDefault(item, 0.0)
+    }
+    println("Order price: $orderTotal")
 }
 
 private fun placeOrder(patronName:String, menuItemName:String, patronGold: MutableMap<String, Double>) {
@@ -79,7 +94,7 @@ private fun placeOrder(patronName:String, menuItemName:String, patronGold: Mutab
 }
 
 private fun displayPatronBalances(patronGold: Map<String, Double>) {
-    narrate("$heroName intuitively knows how much money each patron has")
+    narrate("${player.name} intuitively knows how much money each patron has")
     patronGold.forEach {(patron, balance) ->
         narrate("$patron has ${"%.2f".format(balance)} gold")
     }
