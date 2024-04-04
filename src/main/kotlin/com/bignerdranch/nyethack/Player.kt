@@ -6,7 +6,7 @@ class Weapon (
 
 class Player(
     initialName:String,
-    val hometown: String,
+    val hometown: String = "Jasonsvilla",
     var healthPoints: Int,
     val isImmortal: Boolean
 ) {
@@ -24,9 +24,19 @@ class Player(
             else -> "The Renowned Hero"
         }
 
-    constructor(name:String, hometown:String) : this (
+    val prophecy by lazy {
+        narrate("$name embarks on an arduous quest to locate a fortune teller")
+        Thread.sleep(3000)
+        narrate("The fortune teller bestows a prophecy upon $name")
+        "An intrepid hero from $hometown shall some day " + listOf(
+            "form an unlikely bond between two warring factions",
+            "take possession of an otherworldly blade",
+            "bring the gift of creation back to the world",
+            "best the world-eater").random()
+    }
+
+    constructor(name:String) : this (
         initialName = name,
-        hometown = hometown,
         healthPoints = 100,
         isImmortal = false
     ) {
@@ -51,4 +61,15 @@ class Player(
             println(it.name)
         }
     }
+
+    fun prophesize() {
+        narrate("$name thinks about their future")
+        narrate("A fortune teller told Madrigal, \"$prophecy\"")
+    }
+
+    companion object {
+        private const val SAVE_FILE_NAME = "player.dat"
+        fun fromSaveFile() = 
+    }
+
 }
