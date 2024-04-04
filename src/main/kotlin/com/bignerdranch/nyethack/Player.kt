@@ -2,7 +2,20 @@ package com.bignerdranch.nyethack
 
 class Weapon (
     val name:String
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Weapon
+
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+}
 
 class Player(
     initialName:String,
@@ -65,11 +78,6 @@ class Player(
     fun prophesize() {
         narrate("$name thinks about their future")
         narrate("A fortune teller told Madrigal, \"$prophecy\"")
-    }
-
-    companion object {
-        private const val SAVE_FILE_NAME = "player.dat"
-        fun fromSaveFile() = 
     }
 
 }
