@@ -6,9 +6,10 @@ class Weapon (
 
 class Player(
     initialName:String,
-    val hometown: String,
+    val hometown: String = "Neversummer",
     var healthPoints: Int,
-    val isImmortal: Boolean
+    val isImmortal: Boolean,
+    val playerClass: String = "archer"
 ) {
     var name = initialName
         get() = field.replaceFirstChar { it.uppercase() }
@@ -24,9 +25,24 @@ class Player(
             else -> "The Renowned Hero"
         }
 
-    constructor(name:String, hometown:String) : this (
+    val inventory: List<String>
+
+    init {
+        require(healthPoints > 0) { "healthPoints must be greater than zero" }
+        require(name.isNotBlank()) { "Player must have a name" }
+        val baseInventory = listOf("waterskin", "torches")
+
+        val classInventory = when(playerClass) {
+            "archer" -> listOf("arrows")
+            "wizard" -> listOf("arcane staff", "spellbook")
+            "rogue" -> listOf("lockpicks", "crowbar")
+            else -> emptyList()
+        }
+        inventory = baseInventory + classInventory
+    }
+
+    constructor(name:String) : this (
         initialName = name,
-        hometown = hometown,
         healthPoints = 100,
         isImmortal = false
     ) {
