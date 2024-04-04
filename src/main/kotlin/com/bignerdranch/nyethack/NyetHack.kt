@@ -1,14 +1,13 @@
 package com.bignerdranch.nyethack
 
-val player = Player("Jason")
+lateinit var player:Player
 
 fun main() {
+    narrate("Welcome to Nyethack!")
+    val playerName = promptHeroName()
+    player = Player(playerName)
     //changeNarratorMood()
-    val mortality = if (player.isImmortal) "an immortal" else "a mortal"
-    narrate("${player.name} of ${player.hometown}, ${player.title}, heads to the town square")
-    narrate("${player.name}, $mortality, has ${player.healthPoints} health points")
-    visitTavern()
-    player.castFireball()
+    Game.play()
 }
 
 private fun makeYellow(message:String) = "\u001b[33;1m$message\u001b[0m"

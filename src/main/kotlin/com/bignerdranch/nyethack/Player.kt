@@ -2,7 +2,20 @@ package com.bignerdranch.nyethack
 
 class Weapon (
     val name:String
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Weapon
+
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+}
 
 class Player(
     initialName:String,
@@ -25,6 +38,7 @@ class Player(
             else -> "The Renowned Hero"
         }
 
+<<<<<<< HEAD
     val inventory: List<String>
 
     init {
@@ -39,6 +53,17 @@ class Player(
             else -> emptyList()
         }
         inventory = baseInventory + classInventory
+=======
+    val prophecy by lazy {
+        narrate("$name embarks on an arduous quest to locate a fortune teller")
+        Thread.sleep(3000)
+        narrate("The fortune teller bestows a prophecy upon $name")
+        "An intrepid hero from $hometown shall some day " + listOf(
+            "form an unlikely bond between two warring factions",
+            "take possession of an otherworldly blade",
+            "bring the gift of creation back to the world",
+            "best the world-eater").random()
+>>>>>>> 7b5787cbb076c460aedede2b42d4ff9fc0d4ed98
     }
 
     constructor(name:String) : this (
@@ -67,4 +92,10 @@ class Player(
             println(it.name)
         }
     }
+
+    fun prophesize() {
+        narrate("$name thinks about their future")
+        narrate("A fortune teller told Madrigal, \"$prophecy\"")
+    }
+
 }
