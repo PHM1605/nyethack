@@ -1,18 +1,7 @@
-import com.bignerdranch.nyethack.Player
-import com.bignerdranch.nyethack.Room
+import com.bignerdranch.nyethack.*
 
-fun printIsSourceOfBlessings(any:Any) {
-    val isSourceOfBlessings:Boolean = if (any is Player) {
-        any.title == "The Blessed"
-    } else if (any is Room) {
-        any.name == "The Fount of Blessings"
-    } else {
-        false
-    }
-    println("$any is a source of blessings: $isSourceOfBlessings")
-}
+val fedoraBox:LootBox<Fedora> = LootBox(Fedora("a generic-looking fedora", 15))
+var lootBox: LootBox<Loot> = LootBox(Gemstones(150))
 
 fun main() {
-
 }
-

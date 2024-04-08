@@ -7,6 +7,16 @@ fun main() {
     val playerName = promptHeroName()
     player = Player(playerName)
     //changeNarratorMood()
+
+    val lootBoxOne: LootBox<Fedora> = LootBox(Fedora("a generic-looking fedora", 15))
+    val lootBoxTwo: LootBox<Gemstones> = LootBox(Gemstones(150))
+    repeat(2) {
+        narrate(
+            lootBoxOne.takeLoot()?.let {
+                "The hero retrieves ${it.name} from the box"
+            } ?: "The box is empty"
+        )
+    }
     Game.play()
 }
 

@@ -20,15 +20,23 @@ class Weapon (
 class Player(
     initialName:String,
     val hometown: String = "Neversummer",
-    var healthPoints: Int,
+    override var healthPoints: Int,
     val isImmortal: Boolean,
     val playerClass: String = "archer"
-) {
-    var name = initialName
+): Fightable {
+    override var name = initialName
         get() = field.replaceFirstChar { it.uppercase() }
         private set(value) {
             field = value.trim()
         }
+    override val diceCount = 3
+    override val diceSides = 4
+
+    override fun takeDamage(damage: Int) {
+        if (!isImmortal) {
+            healthPoints -= damage
+        }
+    }
 
     val title:String
         get() = when {
@@ -38,22 +46,6 @@ class Player(
             else -> "The Renowned Hero"
         }
 
-<<<<<<< HEAD
-    val inventory: List<String>
-
-    init {
-        require(healthPoints > 0) { "healthPoints must be greater than zero" }
-        require(name.isNotBlank()) { "Player must have a name" }
-        val baseInventory = listOf("waterskin", "torches")
-
-        val classInventory = when(playerClass) {
-            "archer" -> listOf("arrows")
-            "wizard" -> listOf("arcane staff", "spellbook")
-            "rogue" -> listOf("lockpicks", "crowbar")
-            else -> emptyList()
-        }
-        inventory = baseInventory + classInventory
-=======
     val prophecy by lazy {
         narrate("$name embarks on an arduous quest to locate a fortune teller")
         Thread.sleep(3000)
@@ -63,7 +55,6 @@ class Player(
             "take possession of an otherworldly blade",
             "bring the gift of creation back to the world",
             "best the world-eater").random()
->>>>>>> 7b5787cbb076c460aedede2b42d4ff9fc0d4ed98
     }
 
     constructor(name:String) : this (
