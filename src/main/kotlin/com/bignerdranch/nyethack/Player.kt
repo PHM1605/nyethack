@@ -57,6 +57,9 @@ class Player(
             "best the world-eater").random()
     }
 
+    val inventory = mutableListOf<Loot>()
+    val gold = 0
+
     constructor(name:String) : this (
         initialName = name,
         healthPoints = 100,
