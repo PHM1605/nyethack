@@ -58,7 +58,7 @@ class Player(
     }
 
     val inventory = mutableListOf<Loot>()
-    val gold = 0
+    var gold = 0
 
     constructor(name:String) : this (
         initialName = name,

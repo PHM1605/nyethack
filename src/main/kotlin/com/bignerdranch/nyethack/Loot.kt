@@ -9,6 +9,13 @@ class LootBox<out T: Loot>(val contents: T) {
     fun takeLoot(): T? {
         return contents.takeIf { !isOpen }.also{ isOpen = true }
     }
+    inline fun<reified U> takeLootOfType(): U? {
+        return if (contents is U) {
+            takeLoot() as U
+        } else {
+            null
+        }
+    }
     companion object {
         fun random(): LootBox<Loot> = LootBox(
             contents = when(Random.nextInt(1..100)) {
