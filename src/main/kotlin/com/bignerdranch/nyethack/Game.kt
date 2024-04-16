@@ -14,7 +14,7 @@ object Game {
     var playing:Boolean = true
 
     init {
-        narrate("Welcome, adventurer")
+        narrate("Welcome, Madrigal".frame(5))
         val mortality = if (player.isImmortal) "an immortal" else "a mortal"
         narrate("${player.name}, $mortality, has ${player.healthPoints} health points")
     }
@@ -134,6 +134,19 @@ object Game {
         } else {
             narrate("${currentMonster.name} has been defeated")
             monsterRoom.monster = null
+        }
+    }
+
+    fun configureCurrentRoom() {
+        val monsterRoom = currentRoom as? MonsterRoom ?: return
+        monsterRoom.configurePitGoblin {  goblin ->
+            goblin.healthPoints = when {
+                "Haunted" in name -> 60
+                "Dungeon" in name -> 45
+                "Town Square" in name -> 15
+                else -> 30
+            }
+            goblin
         }
     }
 }
